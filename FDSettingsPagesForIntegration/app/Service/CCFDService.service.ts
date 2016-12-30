@@ -4,7 +4,7 @@ import { Headers, RequestOptions } from 'angular2/http';
 import { ConfigService } from './Config.service';
 @Injectable()
 export class CCFDService {
-	constructor(private jsonp: Jsonp, private http: Http,,private configService: ConfigService) { }
+	constructor(private jsonp: Jsonp, private http: Http,private configService: ConfigService) { }
 
 	APIendpoint: string = '/api/FDCC';
 	APIgenericpoint: string = '/api/Generic';

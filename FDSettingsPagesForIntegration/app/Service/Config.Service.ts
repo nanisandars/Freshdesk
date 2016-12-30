@@ -4,7 +4,7 @@ import { Headers, RequestOptions } from 'angular2/http';
 @Injectable()
 export class ConfigService {
     constructor(private jsonp: Jsonp, private http: Http) { }
-    HttpURL: string = "http://localhost:54969/";//" "http://42.104.96.38:1557/"; 
+    HttpURL: string = "http://xx.xxx.xxx.xx:<portnumber>/";//" "http://42.104.96.38:1557/"; 
 
 // Calls the API  given in parameters
 FetchData(Weburl: string):Promise < any > {
