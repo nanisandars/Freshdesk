@@ -21,7 +21,7 @@ export class UpdateExceptions implements OnInit {
     IntegrationType: string = 'freshdesk';
     AllResponses: any;
     ExceptionRecordsList: any;
-    ExceptionRecordsListBackUp: any = [];
+    ExceptionRecordsListBackUp: any =undefined;
     TokenArchivebutton: boolean = false;
     FilterDays: number;
     SearchRecord: string = "";

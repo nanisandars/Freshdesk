@@ -1,12 +1,12 @@
-<div class="row">
-  <div class="col-md-4" *ngIf="ExceptionRecordsListBackUp">
+<div class="row" *ngIf="ExceptionRecordsListBackUp">
+  <div class="col-md-4" >
     <div class=" pull-right" *ngIf="ExceptionRecordsListBackUp.length>0">
       <button *ngIf="showarchive" type="button" [disabled]="EnableDisableArchive()" (click)="ArchiveTokenExceptions()" class="btn btn-primary">Archive</button>
     </div>
-  </div>
    <div class=" pull-right" *ngIf="ExceptionRecordsListBackUp.length>0">
        <button type="button" [disabled]=" EnableDisableTrigger()" (click)="RetriggerExceptions()" class="btn btn-success ">Retry</button>
-    </div>    
+    </div>
+  </div> 
   <div class="col-md-4" *ngIf="ExceptionRecordsListBackUp">
     <div *ngIf="ExceptionRecordsListBackUp.length>0">
       <span class="pull-right">
@@ -77,7 +77,7 @@
         <table class="table table-bordered" style="padding-right:10px">
           <tbody>
             <tr>
-              <td>{{ExceptionDescription}}</td>
+              <td><div style="width:80%;overflow: auto"> {{ExceptionDescription}}</div></td>
             </tr>
           </tbody>
         </table>

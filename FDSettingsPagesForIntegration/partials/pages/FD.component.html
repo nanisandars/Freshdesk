@@ -115,7 +115,7 @@
                                             <a>{{map.Field.slice(0,25)}}<span *ngIf="map.Field.length>25">...</span></a>
                                         </td>
                                         <td class="md-text-cell-SF">
-                                            <span *ngIf="map.Tag.toUpperCase() != 'EMAIL'&& map.Tag.toUpperCase() != 'NAME'&& map.Tag.toUpperCase() != 'MOBILE'&& map.Tag.toUpperCase() != 'SUBJECT'&&map.Tag.toUpperCase() != 'DESCRIPTION'">
+                                            <span *ngIf="map.Field.toUpperCase() != 'EMAIL'&& map.Field.toUpperCase() != 'NAME'&& map.Field.toUpperCase() != 'MOBILE'&& map.Field.toUpperCase() != 'SUBJECT'&&map.Field.toUpperCase() != 'DESCRIPTION'">
                                                 <span *ngIf="map.disabled!='true'"  style="color:blue; cursor:pointer;" title="Click to edit">
                                                     <a *ngIf="map._Id!=InsertEditid"   (click)="ShowinPopup(map,'Edit')">
                                                         <i class="fa fa-pencil" aria-hidden="true" ></i>

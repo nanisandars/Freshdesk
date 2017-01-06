@@ -30,4 +30,12 @@ FetchData(Weburl: string):Promise < any > {
 			.get(Weburl, { headers: headers })
 			.map(request => <any>request.json()).toPromise();
 	}
+       CCAPIPost(body: any, Weburl: string, AccessToken: string): Promise<any> {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append("Authorization", 'Bearer ' + AccessToken);
+        return this.http.post(Weburl, JSON.stringify(body), { headers: headers })
+            .map(response => response.json()).toPromise();
+
+    }
 }
