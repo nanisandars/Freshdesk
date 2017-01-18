@@ -44,7 +44,7 @@ export class FDComponent implements OnInit {
 	fieldMapConstraint: any = {
 		"TEXT": "custom_text",
 		"MULTILINETEXT": "custom_paragraph",
-		"MULTISELECT": "custom_checkbox",
+		"MULTISELECT": "custom_paragraph",
 		"NUMBER": "custom_number",
 		"STAR-5": "custom_number",
 		"SMILE-5": "custom_number",
@@ -121,7 +121,7 @@ export class FDComponent implements OnInit {
 		var tagslist=[];
 		var that = this;
 		this.Questionslist.forEach(function (singleQuestion, index) {
-			if (singleQuestion.questionTags.length != 0) {
+			if ( singleQuestion.questionTags!=null&&  singleQuestion.questionTags.length != 0) {
 				
 				if (that.defaultFDFields.indexOf("#" + singleQuestion.questionTags[0].toLowerCase() + "#") < 0){
 					tagslist.push(singleQuestion.questionTags[0])
@@ -185,7 +185,7 @@ export class FDComponent implements OnInit {
 		var that = this;
 		var qustionsString = JSON.stringify(that.Questionslist).toLowerCase();
 		that.Questionslist.filter(function (obj) {
-			if (obj["questionTags"].length > 0) {
+			if (obj["questionTags"]!=null && obj["questionTags"].length > 0) {
 				var tagName = obj["questionTags"][0].toLowerCase();
 				var defaultType = obj["displayType"];
 				var Qid = obj["id"];
@@ -236,6 +236,7 @@ export class FDComponent implements OnInit {
 		this.Message = "";
 		this.cdr.detectChanges();
 		var that = this;
+	
 		this.ccfd.Connect2FD(this.FDKey, this.FDURL, this.APIKey, this.userName).then
 			(
 			function (data) {
