@@ -30,7 +30,7 @@
     <tr>
 
       <td>{{GetDate(Record.exceptionRaisedOn)}}</td>
-      <td>{{Record.answerId}}</td>
+      <td>{{GetAnswerID(Record)}}</td>
       <td>{{Record.exceptionRaisedAt}}</td>
       <td>
         <button type="button" class="btn btn-primary" (click)="ShowModal(Record)">View Details</button>
@@ -60,8 +60,10 @@
         <table class="table table-bordered" style="padding-right:10px">
           <tbody>
             <tr>
-            
-              <td><div style="width:900px;overflow-x: auto"> {{ExceptionDescription}}</div></td>
+
+              <td>
+                <div style="width:900px;overflow-x: auto"> {{ExceptionDescription}}</div>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -49,7 +49,7 @@ export class FDComponent implements OnInit {
 		"STAR-5": "custom_number",
 		"SMILE-5": "custom_number",
 		"SCALE": "custom_number",
-		"DROPDOWN": "custom_dropdown",
+		"SELECT": "custom_dropdown",
 		"DATE": "custom_date"
 	};
 
@@ -89,7 +89,7 @@ export class FDComponent implements OnInit {
 	ngOnInit() {
 		this.CCMappings = JSON.parse(this.CCMappings);
 		this.FDCredentials = false;
-		if (this.CCMappings != null &&  this.CCMappings.integrationdetails!=null ) {
+		if (this.CCMappings != null && this.CCMappings.integrationdetails != null) {
 			this.FDURL = this.CCMappings.integrationdetails.split("|")[0];
 			this.FDKey = this.CCMappings.integrationdetails.split("|")[1];;
 			this.getTicketFields();
@@ -106,11 +106,11 @@ export class FDComponent implements OnInit {
 			if (data.message == "authenticated") {
 				that.Connect(false);
 				that.FDCredentials = true;
-				
+
 			}
 			that.showloading = false;
 		});
-		
+
 	}
 
 	//This methos is used to get the latest tag information from CC
@@ -118,33 +118,32 @@ export class FDComponent implements OnInit {
 		var finalarray = [];
 		var QuestionsArray = [];
 		var missingTags = this.defaultFDFields;
-		var tagslist=[];
+		var tagslist = [];
 		var that = this;
 		this.Questionslist.forEach(function (singleQuestion, index) {
-			if ( singleQuestion.questionTags!=null&&  singleQuestion.questionTags.length != 0) {
-				
-				if (that.defaultFDFields.indexOf("#" + singleQuestion.questionTags[0].toLowerCase() + "#") < 0){
+			if (singleQuestion.questionTags != null && singleQuestion.questionTags.length != 0) {
+
+				if (that.defaultFDFields.indexOf("#" + singleQuestion.questionTags[0].toLowerCase() + "#") < 0) {
 					tagslist.push(singleQuestion.questionTags[0])
 					QuestionsArray[singleQuestion.questionTags[0]] = singleQuestion.questionTags[0] + '::' + singleQuestion.displayType + '::' + singleQuestion.id;
-				}else
+				} else
 					missingTags = missingTags.replace("#" + singleQuestion.questionTags[0].toLowerCase() + "#", ",");
 			}
 		});
 
-	
+
 		tagslist.sort(function (a, b) {
             return (a > b) ? -1 : (a < b) ? 1 : 0;
         });
-      
+
         tagslist.reverse();
-		
-		var tagdata=[];
-		for(var singltag of tagslist)
-		{
-			tagdata[singltag]=QuestionsArray[singltag];
+
+		var tagdata = [];
+		for (var singltag of tagslist) {
+			tagdata[singltag] = QuestionsArray[singltag];
 		}
-		finalarray.push(tagdata);	
-		finalarray.push(missingTags.replace(/#/gi, ',').replace(/,,/gi,',').replace(/^,|,$/gm,''));
+		finalarray.push(tagdata);
+		finalarray.push(missingTags.replace(/#/gi, ',').replace(/,,/gi, ',').replace(/^,|,$/gm, ''));
 		return finalarray;
 
 	}
@@ -166,9 +165,9 @@ export class FDComponent implements OnInit {
 				this.existingCCTags = this.GetExistingTags()[0];
 				this.existingCCKeys = Object.keys(this.existingCCTags);
 				this.Tagmappingbackup = this.ccfd.SkipRemovedTagsinCC(this.Questionslist, this.Tagmappingbackup);
-		
+
 				this.Tagmapping = this.Tagmappingbackup;
-				
+
 			}
 			else {
 				this.Tagmappingbackup = null;
@@ -185,7 +184,7 @@ export class FDComponent implements OnInit {
 		var that = this;
 		var qustionsString = JSON.stringify(that.Questionslist).toLowerCase();
 		that.Questionslist.filter(function (obj) {
-			if (obj["questionTags"]!=null && obj["questionTags"].length > 0) {
+			if (obj["questionTags"] != null && obj["questionTags"].length > 0) {
 				var tagName = obj["questionTags"][0].toLowerCase();
 				var defaultType = obj["displayType"];
 				var Qid = obj["id"];
@@ -230,24 +229,24 @@ export class FDComponent implements OnInit {
 	//This method is used to authenticate the systems
 	Connect(loadDefaultMapping: boolean) {
 		this.showloading = true;
-		
-	
+
+
 		this.FDFields = null;
 		this.Message = "";
 		this.cdr.detectChanges();
 		var that = this;
-	
+
 		this.ccfd.Connect2FD(this.FDKey, this.FDURL, this.APIKey, this.userName).then
 			(
 			function (data) {
 				that.FDFields = data;
 				that.FDFields = that.FDFields.filter((item) => that.removeFields.indexOf(item.name.toLowerCase()) == -1);
-that.sortFDFields();
+				that.sortFDFields();
 
-				if (Object.keys(that.GetExistingTags()[1]).length >=6) {
+				if (Object.keys(that.GetExistingTags()[1]).length >= 6) {
 					that.Message = "Please create the following tags: ";
 					that.Message += that.GetExistingTags()[1];
-					that.showloading=false;
+					that.showloading = false;
 					return;
 				}
 				else {
@@ -260,8 +259,16 @@ that.sortFDFields();
 					}
 				}
 			}
-			).catch(function (data) {				
-				that.Message =  "Please enter valid Fresh Desk Admin API Key and Fresh Desk Domain" ;
+			).catch(function (data) {
+
+				if (data.status == '403') {
+
+					var databody = JSON.parse(data._body);
+					that.Message = databody.message
+					that.showloading = false;
+					return;
+				}
+				that.Message = "Please enter valid Fresh Desk Admin API Key and Fresh Desk Domain";
 				that.showloading = false;
 				setTimeout(function () {
 					that.Message = "";
@@ -281,7 +288,7 @@ that.sortFDFields();
         });
 
         Fieldlist.reverse();
-		var FDlist=[]
+		var FDlist = []
 		for (var singlefield of Fieldlist) {
 			for (var singlefdfield of this.FDFields) {
 
@@ -582,7 +589,7 @@ that.sortFDFields();
 	}
 
 	//To fetch the respective edited tag data
-	GetTagOnEdit(Questionid: string) { 
+	GetTagOnEdit(Questionid: string) {
 		var questionobject = this.Questionslist.filter(item => item.id == Questionid);
 		var Tagslist = questionobject[0].questionTags;
 		var locationslist = questionobject[0].displayLocation;
@@ -591,29 +598,29 @@ that.sortFDFields();
 		}
 		var LocationQuestions = this.Questionslist.filter(item => item.displayLocation.some(r => locationslist.includes(r)));
 		LocationQuestions.forEach((singlequestion: any) => { Tagslist = Tagslist.concat(singlequestion.questionTags) });
-		LocationQuestions = this.Questionslist.filter(item => (item.displayLocation.length===0));
+		LocationQuestions = this.Questionslist.filter(item => (item.displayLocation.length === 0));
 		LocationQuestions.forEach((singlequestion: any) => { Tagslist = Tagslist.concat(singlequestion.questionTags) });
 
 		var finaltagslist = [];
-			Tagslist.sort(function (a, b) {
+		Tagslist.sort(function (a, b) {
             return (a > b) ? -1 : (a < b) ? 1 : 0;
         });
-     
+
         Tagslist.reverse();
-		  var missingTags = this.defaultFDFields;
-		
-		Tagslist.forEach((singleTag: any) => { 
-			if(missingTags.toUpperCase().indexOf(singleTag.toUpperCase())==-1){
-			if (finaltagslist.indexOf(singleTag) < 0) {
-				finaltagslist.push(singleTag);
-				
-			}
+		var missingTags = this.defaultFDFields;
+
+		Tagslist.forEach((singleTag: any) => {
+			if (missingTags.toUpperCase().indexOf(singleTag.toUpperCase()) == -1) {
+				if (finaltagslist.indexOf(singleTag) < 0 && singleTag.toLowerCase() != "nps") {
+					finaltagslist.push(singleTag);
+
+				}
 			}
 		});
 
 
 
-   
+
 
 
 		return finaltagslist;
@@ -674,7 +681,7 @@ that.sortFDFields();
 
 	SearchMap() {
 		this.InsertError = "";
-		this.Tagmapping = this.Tagmappingbackup.filter((item) => item.Tag.toUpperCase().indexOf(this.searchKey.toUpperCase()) > -1 || item.Field.toUpperCase().indexOf(this.searchKey.toUpperCase()) > -1);
+		this.Tagmapping = this.Tagmappingbackup.filter((item) => item.Tag.toUpperCase().indexOf(this.searchKey.trim().toUpperCase()) > -1 || item.Field.toUpperCase().indexOf(this.searchKey.trim().toUpperCase()) > -1);
 	}
 
 	/**
@@ -684,7 +691,7 @@ that.sortFDFields();
 	 */
 
 	SortMap(column: string) {
-	
+
 		this.maporder = !this.maporder;
 		this.Tagmapping.sort((a, b) => {
 			var textA = '';

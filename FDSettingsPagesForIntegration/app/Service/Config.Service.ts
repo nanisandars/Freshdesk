@@ -19,7 +19,7 @@ FetchData(Weburl: string):Promise < any > {
         .map(request => <any>request.json()).toPromise();
 }
 	CCAPIGet(Weburl: string, AccessToken: string):Promise < any > {
-		console.log(Weburl);
+	
 		var storeToken: any;
 		var logError: any;
 		var headers = new Headers();

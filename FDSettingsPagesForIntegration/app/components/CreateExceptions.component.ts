@@ -139,7 +139,14 @@ export class CreateExceptions implements OnInit {
             }) + " " + Newdate.getDate() + "," + Newdate.getFullYear() + " " + Newdate.getHours() + ":" + Newdate.getMinutes() + ":" + Newdate.getSeconds()
         return fulldate;
     }
+    GetAnswerID(Record: any) {
 
+        if (Record.answerId != null && Record.answerId.trim() != "")
+            return Record.answerId;
+        var failedrecord = JSON.parse(Record.failedRecord);
+        return failedrecord.CCTicket__c;
+
+    }
     //sorting the  exception  records 
     SortRecords(column: string, recordList: any) {
         if (recordList.length == 0)
@@ -175,7 +182,7 @@ export class CreateExceptions implements OnInit {
                     comparestring = this.GetDate(comparestring) + "";
                 }
 
-                if (comparestring.toUpperCase().indexOf(this.SearchRecord.toUpperCase()) >= 0) {
+                if (comparestring.toUpperCase().indexOf(this.SearchRecord.trim().toUpperCase()) >= 0) {
                     isvalid = true;
                     break;
                 }
@@ -190,10 +197,20 @@ export class CreateExceptions implements OnInit {
     /******  Model popup code Start*/
     ShowModal(Record) {
 
-        this.Modalpopup = true;
-        this.ExceptionDescription = Record.exceptionDescription;
-        var singleresponse = this.AllResponses.filter(item => item.id == Record.answerId);
-        this.SurveyResponse = singleresponse[0].responses;
+        if (Record.answerId != undefined) {
+            this.Modalpopup = true;
+            this.ExceptionDescription = Record.exceptionDescription;
+            var singleresponse = this.AllResponses.filter(item => item.id == Record.answerId);
+            this.SurveyResponse = singleresponse[0].responses;
+        }
+        else {
+            var fRecord = JSON.parse(Record.failedRecord);
+
+            this.Modalpopup = true;
+            this.ExceptionDescription = Record.exceptionDescription;
+            var singleresponse = this.AllResponses.filter(item => item.id == fRecord.CCTicket__c);
+            this.SurveyResponse = singleresponse[0].responses;
+        }
 
     }
 

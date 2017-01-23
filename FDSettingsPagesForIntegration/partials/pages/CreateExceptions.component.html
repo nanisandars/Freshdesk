@@ -39,7 +39,7 @@
   <tbody *ngFor="#Record of ExceptionRecordsList ;#i= index">
     <tr>
       <td>{{GetDate(Record.exceptionRaisedOn)}}</td>
-      <td>{{Record.answerId}}</td>
+      <td>{{GetAnswerID(Record)}}</td>
       <td>{{Record.exceptionRaisedAt}}</td>
       <td>
         <div class="checkbox">
@@ -77,8 +77,10 @@
         <table class="table table-bordered" style="padding-right:10px">
           <tbody>
             <tr>
-              
-               <td><div style="width:900px;overflow-x: auto"> {{ExceptionDescription}}</div></td>
+
+              <td>
+                <div style="width:900px;overflow-x: auto"> {{ExceptionDescription}}</div>
+              </td>
             </tr>
           </tbody>
         </table>
